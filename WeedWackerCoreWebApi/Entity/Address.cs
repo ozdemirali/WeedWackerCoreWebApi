@@ -1,0 +1,22 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WeedWackerCoreWebApi.Entity
+{
+    public class Address:BaseEmailEntity
+    {
+        [Required]
+        public int CityId { get; set; }
+        
+        [Required]
+        public int CountryId { get; set; }
+        public string? PostCode { get; set; }
+
+        [MaxLength(50)]
+        public string? AddInfo { get; set; }
+
+        public string? UserId { get; set; }
+        public User? User { get; set; }
+
+
+    }
+}
