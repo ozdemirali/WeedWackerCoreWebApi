@@ -5,7 +5,7 @@ namespace WeedWackerCoreWebApi.Entity
     public class Address:BaseEmailEntity
     {
         [Required]
-        public int CityId { get; set; }
+        public int PlateCode { get; set; }
         
         [Required]
         public int CountryId { get; set; }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeedWackerCoreWebApi.Context;
 
@@ -11,9 +12,11 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    partial class WeedWackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230622184729_initialThree")]
+    partial class initialThree
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

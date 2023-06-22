@@ -2,7 +2,7 @@
 {
     public class EmployerSetting:BaseEmailEntity
     {
-        public int CityId { get; set; }
+        public int PlateCode { get; set; }
         public int CountryId { get; set; }
 
        

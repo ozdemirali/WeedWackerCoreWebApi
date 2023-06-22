@@ -1,4 +1,6 @@
-﻿namespace WeedWackerCoreWebApi.Entity
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WeedWackerCoreWebApi.Entity
 {
     public class Role
     {

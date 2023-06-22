@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WeedWackerCoreWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,8 @@ namespace WeedWackerCoreWebApi.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    PlateCode = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,12 +29,27 @@ namespace WeedWackerCoreWebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProvinceId = table.Column<long>(type: "bigint", nullable: false),
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployerSetting",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployerSetting", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -56,7 +71,7 @@ namespace WeedWackerCoreWebApi.Migrations
                 columns: table => new
                 {
                     Code = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     QuarterId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -71,8 +86,8 @@ namespace WeedWackerCoreWebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CityId = table.Column<long>(type: "bigint", nullable: false),
-                    CountryId = table.Column<long>(type: "bigint", nullable: false)
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
+                    CountryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,6 +113,7 @@ namespace WeedWackerCoreWebApi.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EmployerSettingId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     RoleId = table.Column<byte>(type: "tinyint", nullable: false),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -105,6 +121,11 @@ namespace WeedWackerCoreWebApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_EmployerSetting_EmployerSettingId",
+                        column: x => x.EmployerSettingId,
+                        principalTable: "EmployerSetting",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
@@ -118,7 +139,7 @@ namespace WeedWackerCoreWebApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
+                    PlateCode = table.Column<int>(type: "int", nullable: false),
                     CountryId = table.Column<int>(type: "int", nullable: false),
                     PostCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddInfo = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -137,34 +158,13 @@ namespace WeedWackerCoreWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmployerSetting",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CityId = table.Column<int>(type: "int", nullable: false),
-                    CountryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Modified = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployerSetting", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_EmployerSetting_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Works",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProvinceId = table.Column<long>(type: "bigint", nullable: false),
-                    DistrictId = table.Column<long>(type: "bigint", nullable: false),
+                    CityId = table.Column<long>(type: "bigint", nullable: false),
+                    CountryId = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -227,11 +227,9 @@ namespace WeedWackerCoreWebApi.Migrations
                 column: "WorkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployerSetting_UserId",
-                table: "EmployerSetting",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                name: "IX_Users_EmployerSettingId",
+                table: "Users",
+                column: "EmployerSettingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -260,9 +258,6 @@ namespace WeedWackerCoreWebApi.Migrations
                 name: "EmployerOffers");
 
             migrationBuilder.DropTable(
-                name: "EmployerSetting");
-
-            migrationBuilder.DropTable(
                 name: "Errors");
 
             migrationBuilder.DropTable(
@@ -276,6 +271,9 @@ namespace WeedWackerCoreWebApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "EmployerSetting");
 
             migrationBuilder.DropTable(
                 name: "Roles");

@@ -12,15 +12,15 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    [Migration("20230621215711_inital")]
-    partial class inital
+    [Migration("20230622183928_initialTwo")]
+    partial class initialTwo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.7")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,14 +37,14 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("PlateCode")
+                        .HasColumnType("int");
 
                     b.Property<string>("PostCode")
                         .HasColumnType("nvarchar(max)");
@@ -64,10 +64,11 @@ namespace WeedWackerCoreWebApi.Migrations
             modelBuilder.Entity("WeedWackerCoreWebApi.Entity.City", b =>
                 {
                     b.Property<int>("PlateCode")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlateCode"));
+                    b.Property<string>("Name")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("PlateCode");
 
@@ -87,8 +88,8 @@ namespace WeedWackerCoreWebApi.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<long>("ProvinceId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("PlateCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -138,23 +139,16 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PlateCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("EmployerSetting");
                 });
@@ -184,10 +178,10 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CityId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int>("PlateCode")
                         .HasColumnType("int");
 
                     b.Property<int>("QuarterId")
@@ -206,11 +200,16 @@ namespace WeedWackerCoreWebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<long>("CityId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("CountryId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PlateCode")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -238,6 +237,9 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EmployerSettingId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -255,6 +257,8 @@ namespace WeedWackerCoreWebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployerSettingId");
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
@@ -271,18 +275,18 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("CityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CountryId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<long>("DistrictId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
-
-                    b.Property<long>("ProvinceId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -320,22 +324,19 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Navigation("Work");
                 });
 
-            modelBuilder.Entity("WeedWackerCoreWebApi.Entity.EmployerSetting", b =>
-                {
-                    b.HasOne("WeedWackerCoreWebApi.Entity.User", "User")
-                        .WithOne("EmployerSetting")
-                        .HasForeignKey("WeedWackerCoreWebApi.Entity.EmployerSetting", "UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("WeedWackerCoreWebApi.Entity.User", b =>
                 {
+                    b.HasOne("WeedWackerCoreWebApi.Entity.EmployerSetting", "EmployerSetting")
+                        .WithMany()
+                        .HasForeignKey("EmployerSettingId");
+
                     b.HasOne("WeedWackerCoreWebApi.Entity.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("EmployerSetting");
 
                     b.Navigation("Role");
                 });
@@ -359,9 +360,6 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("EmployerOffers");
-
-                    b.Navigation("EmployerSetting")
-                        .IsRequired();
 
                     b.Navigation("Works");
                 });

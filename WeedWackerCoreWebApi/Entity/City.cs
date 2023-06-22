@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WeedWackerCoreWebApi.Entity
 {
     public class City
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
-        [Required]
         public int PlateCode { get; set; }
         
         [MaxLength(50)]
-        public string? Name;
+        public string? Name { get; set; }
     }
 }

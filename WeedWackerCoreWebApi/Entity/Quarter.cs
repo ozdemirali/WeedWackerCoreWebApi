@@ -7,9 +7,13 @@ namespace WeedWackerCoreWebApi.Entity
         public int Id { get; set; }
 
         [Required]
-        public Int64 CityId { get; set; }
+        public int PlateCode { get; set; }
         [Required]
-        public Int64 CountryId { get; set; }
-        
+        public int CountryId { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string? Name { get; set; }
+
     }
 }

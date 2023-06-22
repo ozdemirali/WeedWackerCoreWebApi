@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeedWackerCoreWebApi.Context;
 
@@ -11,9 +12,11 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    partial class WeedWackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230622185128_initialfive")]
+    partial class initialfive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -168,32 +171,6 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Errors");
-                });
-
-            modelBuilder.Entity("WeedWackerCoreWebApi.Entity.PostCode", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlateCode")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuarterId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PostCodes");
                 });
 
             modelBuilder.Entity("WeedWackerCoreWebApi.Entity.Quarter", b =>

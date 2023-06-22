@@ -5,9 +5,9 @@ namespace WeedWackerCoreWebApi.Entity
     public class Work:BaseEntity
     {
         [Required]
-        public Int64 ProvinceId { get; set; }
+        public Int64 CityId { get; set; }
         [Required]
-        public Int64 DistrictId { get; set;}
+        public Int64 CountryId { get; set;}
 
         [MaxLength(255)]    
         public string? Description { get; set; }
