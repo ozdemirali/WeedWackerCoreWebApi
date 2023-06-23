@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeedWackerCoreWebApi.Context;
 
@@ -11,9 +12,11 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    partial class WeedWackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230623184450_initialseven")]
+    partial class initialseven
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -281,8 +284,11 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CountryId")
-                        .HasColumnType("int");
+                    b.Property<long>("CityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CountryId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .HasMaxLength(255)
@@ -290,9 +296,6 @@ namespace WeedWackerCoreWebApi.Migrations
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("PlateCode")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

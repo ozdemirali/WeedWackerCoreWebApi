@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WeedWackerCoreWebApi.Context;
-
+using WeedWackerCoreWebApi.IRepository;
+using WeedWackerCoreWebApi.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<WeedWackerDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("WeedWackerConnection")));
 
+
+//Add Repository
+builder.Services.AddTransient<IWorkRepository,WorkRepository>();
 
 var app = builder.Build();
 
