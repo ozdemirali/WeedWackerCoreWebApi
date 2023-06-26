@@ -4,6 +4,6 @@
     {
         public string? Id { get; set; }
         public DateTime AddedDate { get; set; }
-        public DateTime Modified { get; set; }
+        public DateTime ModifiedDate { get; set; }
     }
 }

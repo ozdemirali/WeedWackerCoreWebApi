@@ -7,7 +7,7 @@ namespace WeedWackerCoreWebApi.Entity
     {
         public Int64 Id { get; set; }
         public DateTime AddedDate { get; set; }
-        public DateTime Modified { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
     }
 }

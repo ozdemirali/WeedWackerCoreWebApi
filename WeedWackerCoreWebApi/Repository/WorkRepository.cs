@@ -1,6 +1,8 @@
 ﻿using WeedWackerCoreWebApi.Context;
 using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.ViewModel;
+using WeedWackerCoreWebApi.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace WeedWackerCoreWebApi.Repository
 {
@@ -15,7 +17,8 @@ namespace WeedWackerCoreWebApi.Repository
 
         public void DeleteWork(long id)
         {
-            throw new NotImplementedException();
+            var data = _context.Works.Find(id);
+            _context.Works.Remove(data);
         }
 
         
@@ -25,10 +28,10 @@ namespace WeedWackerCoreWebApi.Repository
             var data = _context.Works.Select(w => new ViewModelWork
             {
                 Id = w.Id,
-                CountryId = w.CountryId,
+                City = _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
+                Country=_context.Countries.Where(c=>c.Id==w.CountryId).FirstOrDefault().Name,
                 Description = w.Description,
-                PlateCode = w.PlateCode,
-                UserId = w.UserId
+                User = w.UserId
             }).ToList();
            
             return data;
@@ -36,22 +39,47 @@ namespace WeedWackerCoreWebApi.Repository
 
         public ViewModelWork GetWorkById(long id)
         {
-            throw new NotImplementedException();
+            var data= _context.Works.Where(w=>w.Id==id).Select(w=> new ViewModelWork
+            {
+                Id= w.Id,
+                City= _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
+                Country = _context.Countries.Where(c => c.Id == w.CountryId).FirstOrDefault().Name,
+                Description = w.Description,
+                User = w.UserId
+            }).FirstOrDefault();
+
+            return data;
         }
 
-        public void InsertWork(ViewModelWork work)
+        public void InsertWork(ViewModelInsertWork work)
         {
-            throw new NotImplementedException();
+            var data = new Work();
+            data.Description = work.Description;
+            data.UserId = work.UserId;
+            data.PlateCode = work.PlateCode;
+            data.CountryId = work.CountryId;
+            data.AddedDate = work.AddedDate;
+            data.ModifiedDate = work.AddedDate;
+            
+            
+
+            _context.Works.Add(data);
+
         }
 
-        public int save()
+        public int Save()
         {
-            throw new NotImplementedException();
+            return _context.SaveChanges();
         }
 
-        public void UpdateWork(ViewModelWork work)
+        public void UpdateWork(ViewModelUpdateWork work)
         {
-            throw new NotImplementedException();
+            var data = _context.Works.Find(work.Id);
+            data.PlateCode= work.PlateCode;
+            data.CountryId = work.CountryId;
+            data.Description= work.Description;
+            data.ModifiedDate = work.ModifiedDate;
+            _context.Entry(data).State = EntityState.Modified;
         }
 
 

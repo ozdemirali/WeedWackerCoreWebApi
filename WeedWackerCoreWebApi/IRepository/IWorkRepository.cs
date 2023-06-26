@@ -1,4 +1,5 @@
 ﻿using WeedWackerCoreWebApi.ViewModel;
+using WeedWackerCoreWebApi.Entity;
 
 namespace WeedWackerCoreWebApi.IRepository
 {
@@ -6,10 +7,10 @@ namespace WeedWackerCoreWebApi.IRepository
     {
         IEnumerable<ViewModelWork> GetWorkAll();
         ViewModelWork GetWorkById(Int64 id);
-        void InsertWork(ViewModelWork work);
+        void InsertWork(ViewModelInsertWork work);
         void DeleteWork(Int64 id);
-        void UpdateWork(ViewModelWork work);
-        int save();
+        void UpdateWork(ViewModelUpdateWork work);
+        int Save();
 
     }
 }
