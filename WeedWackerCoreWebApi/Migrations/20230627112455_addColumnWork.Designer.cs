@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeedWackerCoreWebApi.Context;
 
@@ -11,9 +12,11 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    partial class WeedWackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230627112455_addColumnWork")]
+    partial class addColumnWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace WeedWackerCoreWebApi.Migrations
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PlateCode")
                         .HasColumnType("int");

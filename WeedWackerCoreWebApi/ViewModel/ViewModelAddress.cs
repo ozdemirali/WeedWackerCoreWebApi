@@ -1,23 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WeedWackerCoreWebApi.Entity
+namespace WeedWackerCoreWebApi.ViewModel
 {
-    public class Address:BaseEmailEntity
+    public class ViewModelAddress
     {
-        [Required]
+        public string? Id { get; set; }
         public int PlateCode { get; set; }
-        
-        [Required]
         public int CountryId { get; set; }
         public string? PostCode { get; set; }
-
-        [MaxLength(50)]
         public string? AddInfo { get; set; }
         public string? Phone { get; set; }
-
-        public string? UserId { get; set; }
-        public User? User { get; set; }
-
-
     }
 }

@@ -23,7 +23,7 @@ namespace WeedWackerCoreWebApi.Repository
 
         
 
-        public IEnumerable<ViewModelWork> GetWorkAll()
+        public IEnumerable<ViewModelWork> GetWorks()
         {
             var data = _context.Works.Select(w => new ViewModelWork
             {
@@ -31,6 +31,7 @@ namespace WeedWackerCoreWebApi.Repository
                 City = _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
                 Country=_context.Countries.Where(c=>c.Id==w.CountryId).FirstOrDefault().Name,
                 Description = w.Description,
+                Image=w.Image,
                 User = w.UserId
             }).ToList();
            
@@ -45,6 +46,7 @@ namespace WeedWackerCoreWebApi.Repository
                 City= _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
                 Country = _context.Countries.Where(c => c.Id == w.CountryId).FirstOrDefault().Name,
                 Description = w.Description,
+                Image=w.Image,
                 User = w.UserId
             }).FirstOrDefault();
 
@@ -53,15 +55,26 @@ namespace WeedWackerCoreWebApi.Repository
 
         public void InsertWork(ViewModelInsertWork work)
         {
-            var data = new Work();
-            data.Description = work.Description;
-            data.UserId = work.UserId;
-            data.PlateCode = work.PlateCode;
-            data.CountryId = work.CountryId;
-            data.AddedDate = work.AddedDate;
-            data.ModifiedDate = work.AddedDate;
-            
-            
+            //var data = new Work();
+
+
+            //data.Description = work.Description;
+            //data.UserId = work.UserId;
+            //data.PlateCode = work.PlateCode;
+            //data.CountryId = work.CountryId;
+            //data.Image=work.Image;
+            //data.AddedDate = work.AddedDate;
+            //data.ModifiedDate = work.AddedDate;
+
+            var data = new Work
+            {
+                AddedDate = DateTime.Now,
+                CountryId=work.CountryId,
+                Description = work.Description,
+                Image=work.Image,
+                PlateCode= work.PlateCode,
+                UserId=work.UserId,
+            };
 
             _context.Works.Add(data);
 
@@ -78,6 +91,7 @@ namespace WeedWackerCoreWebApi.Repository
             data.PlateCode= work.PlateCode;
             data.CountryId = work.CountryId;
             data.Description= work.Description;
+            data.Image=work.Image;
             data.ModifiedDate = work.ModifiedDate;
             _context.Entry(data).State = EntityState.Modified;
         }

@@ -15,11 +15,13 @@ builder.Services.AddSwaggerGen();
 
 //Add connectionString 
 builder.Services.AddDbContext<WeedWackerDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("WeedWackerConnection")));
+builder.Configuration.GetConnectionString("WeedWackerConnection")));
 
 
 //Add Repository
 builder.Services.AddTransient<IWorkRepository,WorkRepository>();
+builder.Services.AddTransient<IAddressRepository,AddressRepository>();
+builder.Services.AddTransient<ISettingRepository, SettingRepository>();
 
 var app = builder.Build();
 

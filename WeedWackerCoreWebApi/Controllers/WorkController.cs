@@ -18,25 +18,32 @@ namespace WeedWackerCoreWebApi.Controllers
             this._workRepository = workRepository;
         }
 
+        /// <summary>
+        /// This method gets all data from Database by using workRepository pattern.
+        /// </summary>
+        /// <returns>All Work</returns>
         [HttpGet]
-        public IEnumerable<ViewModelWork> GetWorkAll()
+        public IEnumerable<ViewModelWork> Get()
         {
-            return _workRepository.GetWorkAll();
+            return _workRepository.GetWorks();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ViewModelWork>> GetWorkById(long id)
+        public ActionResult<ViewModelWork> GetById(long id)
         {
-            var work=_workRepository.GetWorkById(id);
-           
+            var work = _workRepository.GetWorkById(id);
+
+            if (work == null)
+            {
+                return NotFound();
+            }
+
             return work;
         }
 
         [HttpPost]
-        public IActionResult PostWork(ViewModelInsertWork work)
+        public IActionResult Post(ViewModelInsertWork work)
         {
-
-
             _workRepository.InsertWork(work);
             if (_workRepository.Save() > 0)
             {
@@ -47,8 +54,9 @@ namespace WeedWackerCoreWebApi.Controllers
         }
 
         [HttpPut]
-        public  IActionResult PutWork(ViewModelUpdateWork work)
+        public  IActionResult Put(ViewModelUpdateWork work)
         {
+            
             _workRepository.UpdateWork(work);
             if (_workRepository.Save()>0)
             {
@@ -59,8 +67,9 @@ namespace WeedWackerCoreWebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteWork(long id)
+        public IActionResult Delete(long id)
         {
+           
             _workRepository.DeleteWork(id);
             if (_workRepository.Save() > 0)
             {

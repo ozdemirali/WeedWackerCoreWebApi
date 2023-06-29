@@ -5,7 +5,7 @@ namespace WeedWackerCoreWebApi.IRepository
 {
     public interface IWorkRepository:IDisposable
     {
-        IEnumerable<ViewModelWork> GetWorkAll();
+        IEnumerable<ViewModelWork> GetWorks();
         ViewModelWork GetWorkById(Int64 id);
         void InsertWork(ViewModelInsertWork work);
         void DeleteWork(Int64 id);
