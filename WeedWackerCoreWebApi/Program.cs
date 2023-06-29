@@ -22,6 +22,7 @@ builder.Configuration.GetConnectionString("WeedWackerConnection")));
 builder.Services.AddTransient<IWorkRepository,WorkRepository>();
 builder.Services.AddTransient<IAddressRepository,AddressRepository>();
 builder.Services.AddTransient<ISettingRepository, SettingRepository>();
+builder.Services.AddTransient<IOfferRepository,OfferRepository>();
 
 var app = builder.Build();
 
