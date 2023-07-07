@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using WeedWackerCoreWebApi.Entity;
+using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.Model;
 
 namespace WeedWackerCoreWebApi.Controllers
@@ -11,28 +13,45 @@ namespace WeedWackerCoreWebApi.Controllers
     public class UserController : ControllerBase
     {
 
+        private readonly IUserRepository _userRepository;
+        private readonly IErrorRepository _errorRepository;
+
+        public UserController(IUserRepository userRepository, IErrorRepository errorRepository)
+        {
+            this._userRepository = userRepository;
+            this._errorRepository = errorRepository;
+
+        }
+
         //For admin Only
         [HttpGet]
         [Route("Admins")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Customer")]
 
         public IActionResult AdminEndPoint()
         {
             var currentUser = GetCurrentUser();
+            Error error = new()
+            {
+                Id = Guid.NewGuid(),
+                Message="Test için",
+                Place="User Controll"
+            
+            };
+            _errorRepository.InsertError(error);
+
             return Ok($"Hi you are an {currentUser.Role}");
         }
-        private UserModel GetCurrentUser()
+        private CurrentUser GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
             {
                 var userClaims = identity.Claims;
-                return new UserModel
+                return new CurrentUser
                 {
-                    Username = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
                     Role = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value
-                    //Username = "admin",
-                    //Role = "Admin"
                 };
             }
             return null;

@@ -28,6 +28,8 @@ builder.Services.AddTransient<ISettingRepository, SettingRepository>();
 builder.Services.AddTransient<ICustomerOfferRepository,CustomerOfferRepository>();
 builder.Services.AddTransient<IEmployerOfferRepository, EmployerOfferRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IErrorRepository, ErrorRepository>();
+
 
 
 //JWT Authentication
