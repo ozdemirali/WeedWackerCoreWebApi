@@ -40,7 +40,7 @@ namespace WeedWackerCoreWebApi.Controllers
             };
             _errorRepository.InsertError(error);
 
-            return Ok($"Hi you are an {currentUser.Role}");
+            return Ok($"Hi you are an {currentUser.Email +" "+currentUser.Name + " "+ currentUser.Role}");
         }
         private CurrentUser GetCurrentUser()
         {
@@ -51,7 +51,9 @@ namespace WeedWackerCoreWebApi.Controllers
                 return new CurrentUser
                 {
                     Email = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Name= userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value,
                     Role = userClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value
+
                 };
             }
             return null;

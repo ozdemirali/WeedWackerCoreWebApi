@@ -24,6 +24,7 @@ namespace WeedWackerCoreWebApi.Repository
                         select new CurrentUser
                         {
                             Email=u.Id,
+                            Name=u.Name,
                             Role=r.Name
                         }).FirstOrDefault();
 
