@@ -48,7 +48,7 @@ namespace WeedWackerCoreWebApi.Repository
             catch (Exception e)
             {
 
-                throw new Exception("Error Repository Dispose(bool disposing)");
+                throw new Exception("Error Repository Dispose(bool disposing )"+e.Message);
             }
 
            
@@ -63,7 +63,7 @@ namespace WeedWackerCoreWebApi.Repository
             }
             catch (Exception e)
             {
-                throw new Exception("Error Repository Dispose()");
+                throw new Exception("Error Repository Dispose() " + e.Message);
             }
            
         }
