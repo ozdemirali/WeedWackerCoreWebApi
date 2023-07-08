@@ -18,90 +18,216 @@ namespace WeedWackerCoreWebApi.Repository
         }
         public void DeleteAddress(string id)
         {
-            var data = _context.Addresses.Find(id);
-            _context.Addresses.Remove(data);
+            try
+            {
+                var data = _context.Addresses.Find(id);
+                _context.Addresses.Remove(data);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - DeleteAddress(string id)",
+                };
+                _context.Errors.Add(error);
+            }
+
+           
         }
 
 
         public IEnumerable<ViewModelAddress> GetAddress()
         {
-            return _context.Addresses.Select(a => new ViewModelAddress
+            try
             {
-                Id=a.Id,
-                PlateCode=a.PlateCode,
-                CountryId=a.CountryId,  
-                AddInfo=a.AddInfo,
-                PostCode=a.PostCode,
-                Phone= a.Phone , 
-            }).ToList();
+                return _context.Addresses.Select(a => new ViewModelAddress
+                {
+                    Id = a.Id,
+                    PlateCode = a.PlateCode,
+                    CountryId = a.CountryId,
+                    AddInfo = a.AddInfo,
+                    PostCode = a.PostCode,
+                    Phone = a.Phone,
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - GetAddress()",
+                };
+                _context.Errors.Add(error);
+                
+                return Enumerable.Empty<ViewModelAddress>();
+            }
+            
         }
 
         public ViewModelAddress GetAdressById(string id)
         {
-            var data = _context.Addresses.Where(a => a.Id == id).Select(a => new ViewModelAddress
-            {
-                Id=a.Id,
-                PlateCode=a.PlateCode,
-                CountryId=a.CountryId,
-                AddInfo=a.AddInfo,
-                PostCode = a.PostCode,
-                Phone =a.Phone,
-                
-            }).FirstOrDefault();
 
-            return data;
+            try
+            {
+                var data = _context.Addresses.Where(a => a.Id == id).Select(a => new ViewModelAddress
+                {
+                    Id = a.Id,
+                    PlateCode = a.PlateCode,
+                    CountryId = a.CountryId,
+                    AddInfo = a.AddInfo,
+                    PostCode = a.PostCode,
+                    Phone = a.Phone,
+
+                }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - GetAddressById()",
+                };
+                _context.Errors.Add(error);
+                return new ViewModelAddress();
+            }
+           
         }
 
         public void InsertAddress(ViewModelAddress address)
         {
-            var data = new Address
+            try
             {
-                Id=address.Id,
-                UserId=address.Id,
-                PlateCode = address.PlateCode,
-                CountryId = address.CountryId,
-                PostCode = address.PostCode,
-                Phone = address.Phone,
-                AddInfo = address.AddInfo,
-                AddedDate=DateTime.Now,
-            };
-            _context.Addresses.Add(data);
+                var data = new Address
+                {
+                    Id = address.Id,
+                    UserId = address.Id,
+                    PlateCode = address.PlateCode,
+                    CountryId = address.CountryId,
+                    PostCode = address.PostCode,
+                    Phone = address.Phone,
+                    AddInfo = address.AddInfo,
+                    AddedDate = DateTime.Now,
+                };
+                _context.Addresses.Add(data);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - InsertAddress(ViewModelAddress address)",
+                };
+                _context.Errors.Add(error);
+            }
+
+           
         }
 
         public int Save()
         {
-            return _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - InsertAddress(ViewModelAddress address)",
+                };
+                _context.Errors.Add(error);
+
+                return 0;
+            }
+
         }
 
         public void UpdateAddress(ViewModelAddress address)
         {
-            var data = _context.Addresses.Find(address.Id);
-            data.AddInfo=address.AddInfo;
-            data.CountryId=address.CountryId;
-            data.Phone= address.Phone;
-            data.PlateCode = address.PlateCode;
-            data.Phone = data.Phone;
-            data.ModifiedDate= DateTime.Now;
-            _context.Entry(data).State = EntityState.Modified;
+            try
+            {
+                var data = _context.Addresses.Find(address.Id);
+                data.AddInfo = address.AddInfo;
+                data.CountryId = address.CountryId;
+                data.Phone = address.Phone;
+                data.PlateCode = address.PlateCode;
+                data.Phone = data.Phone;
+                data.ModifiedDate = DateTime.Now;
+                _context.Entry(data).State = EntityState.Modified;
+            }
+            catch (Exception e)
+            {
+
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository - UpdateAddress(ViewModelAddress address)",
+                };
+                _context.Errors.Add(error);
+            }
+
+            
         }
 
        
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            try
             {
-                if (disposing)
+                if (!this.disposed)
                 {
-                    _context.Dispose();
+                    if (disposing)
+                    {
+                        _context.Dispose();
+                    }
                 }
+                this.disposed = true;
             }
-            this.disposed = true;
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository -  Dispose(bool disposing)",
+                };
+                _context.Errors.Add(error);
+            }
+
+            
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Address Repository -  Dispose()",
+                };
+                _context.Errors.Add(error);
+            }
+
+           
         }
 
     }

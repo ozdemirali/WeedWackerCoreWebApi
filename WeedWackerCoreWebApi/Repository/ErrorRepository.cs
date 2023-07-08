@@ -1,4 +1,5 @@
-﻿using WeedWackerCoreWebApi.Context;
+﻿using Microsoft.Identity.Client;
+using WeedWackerCoreWebApi.Context;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
 
@@ -17,28 +18,54 @@ namespace WeedWackerCoreWebApi.Repository
 
         public void InsertError(Error error)
         {
-            _context.Errors.Add(error);
-            _context.SaveChanges();
+            try
+            {
+                _context.Errors.Add(error);
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error Repository InsertError(Error error)");
+            }
+            
            
           
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            try
             {
-                if (disposing)
+                if (!this.disposed)
                 {
-                    _context.Dispose();
+                    if (disposing)
+                    {
+                        _context.Dispose();
+                    }
                 }
+                this.disposed = true;
             }
-            this.disposed = true;
+            catch (Exception e)
+            {
+
+                throw new Exception("Error Repository Dispose(bool disposing)");
+            }
+
+           
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error Repository Dispose()");
+            }
+           
         }
     }
 }

@@ -18,81 +18,180 @@ namespace WeedWackerCoreWebApi.Repository
 
         public IEnumerable<ViewModelEmployerOffer> GetOffers(string id)
         {
-            var data = _context.EmployerOffers.Where(o => o.UserId == id).ToList();
-
-            if (data.Any())
+            try
             {
-                return data.Select(o => new ViewModelEmployerOffer
+                var data = _context.EmployerOffers.Where(o => o.UserId == id).ToList();
+
+                if (data.Any())
                 {
-                    Id = o.Id,
-                    UserId = o.UserId,
-                    WorkId = o.WorkId,
-                    CustomerId = o.CustomerId,
-                    StartTime = o.StartTime,
-                    EndTime = o.EndTime,
-                    Price = o.Price
-                }).ToList();
+                    return data.Select(o => new ViewModelEmployerOffer
+                    {
+                        Id = o.Id,
+                        UserId = o.UserId,
+                        WorkId = o.WorkId,
+                        CustomerId = o.CustomerId,
+                        StartTime = o.StartTime,
+                        EndTime = o.EndTime,
+                        Price = o.Price
+                    }).ToList();
+                }
+
+                return Enumerable.Empty<ViewModelEmployerOffer>();
             }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - GetOffers(string id)",
+                };
 
-            return Enumerable.Empty<ViewModelEmployerOffer>();
-
-          
+                _context.Errors.Add(error);
+                return Enumerable.Empty<ViewModelEmployerOffer>();
+            }
         }
 
         public void InsertOffer(ViewModelEmployerOffer offer)
         {
-
-            var data = new EmployerOffer
+            try
             {
-                UserId = offer.UserId,
-                WorkId = offer.WorkId,
-                CustomerId = offer.CustomerId,
-                Price = offer.Price,
-                StartTime = offer.StartTime,
-                EndTime = offer.EndTime,
-                AddedDate = DateTime.Now
-            };
-            _context.EmployerOffers.Add(data);
+                var data = new EmployerOffer
+                {
+                    UserId = offer.UserId,
+                    WorkId = offer.WorkId,
+                    CustomerId = offer.CustomerId,
+                    Price = offer.Price,
+                    StartTime = offer.StartTime,
+                    EndTime = offer.EndTime,
+                    AddedDate = DateTime.Now
+                };
+                _context.EmployerOffers.Add(data);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - InsertOffer(ViewModelEmployerOffer offer)",
+                };
+                _context.Errors.Add(error); 
+
+            }
+
+            
+
         }
 
         public void UpdateOffer(ViewModelEmployerOffer offer)
         {
-            var data = _context.EmployerOffers.Find(offer.Id);
-            data.StartTime = offer.StartTime;
-            data.EndTime = offer.EndTime;
-            data.Price = offer.Price;
-            data.ModifiedDate=DateTime.Now;
+            try
+            {
+                var data = _context.EmployerOffers.Find(offer.Id);
+                data.StartTime = offer.StartTime;
+                data.EndTime = offer.EndTime;
+                data.Price = offer.Price;
+                data.ModifiedDate = DateTime.Now;
 
-            _context.Entry(data).State = EntityState.Modified;
+                _context.Entry(data).State = EntityState.Modified;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - UpdateOffer(ViewModelEmployerOffer offer)",
+                };
+                _context.Errors.Add(error);
+            }
+           
         }
 
         public void DeleteOffer(Int64 id)
         {
-            var data = _context.EmployerOffers.Find(id);
-            _context.EmployerOffers.Remove(data);
+            try
+            {
+                var data = _context.EmployerOffers.Find(id);
+                _context.EmployerOffers.Remove(data);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - DeleteOffer(Int64 id)",
+                };
+                _context.Errors.Add(error);
+            }
+            
         }
 
         public int Save()
         {
-            return _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - Save()",
+                };
+                _context.Errors.Add(error);
+                return 0;
+            }
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            try
             {
-                if (disposing)
+                if (!this.disposed)
                 {
-                    _context.Dispose();
+                    if (disposing)
+                    {
+                        _context.Dispose();
+                    }
                 }
+                this.disposed = true;
             }
-            this.disposed = true;
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - Dispose(bool disposing)",
+                };
+                _context.Errors.Add(error);
+            }
+           
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "EmployerOffer Repository - Dispose()",
+                };
+                _context.Errors.Add(error);
+            }
+           
         }
 
        

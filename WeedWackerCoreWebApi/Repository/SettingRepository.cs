@@ -17,80 +17,204 @@ namespace WeedWackerCoreWebApi.Repository
         }
         public void DeleteSetting(string id)
         {
-            var data = _context.EmployerSetting.Find(id);
-            _context.EmployerSetting.Remove(data);
+            try
+            {
+                var data = _context.EmployerSetting.Find(id);
+                _context.EmployerSetting.Remove(data);
+            }
+            catch (Exception e)
+            {
+
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - DeleteSetting(string id)",
+                };
+                _context.Errors.Add(error);
+            }
+
+           
         }
 
       
 
         public ViewModelSetting GetSettingById(string id)
         {
-            var data = _context.EmployerSetting.Where(s => s.Id == id).Select(s => new ViewModelSetting
+            try
             {
-                Id=s.Id,
-                PlateCode=s.PlateCode,
-                CountryId=s.CountryId,
-            }).FirstOrDefault();
+                var data = _context.EmployerSetting.Where(s => s.Id == id).Select(s => new ViewModelSetting
+                {
+                    Id = s.Id,
+                    PlateCode = s.PlateCode,
+                    CountryId = s.CountryId,
+                }).FirstOrDefault();
 
-            return data;
+                return data;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - DGetSettingById(string id)",
+                };
+                _context.Errors.Add(error);
+
+                return new ViewModelSetting();
+            }
+
+            
         }
 
         public IEnumerable<ViewModelSetting> GetSettings()
         {
-            return _context.EmployerSetting.Select(s=> new ViewModelSetting {
-               Id=s.Id,
-               PlateCode=s.PlateCode,
-               CountryId=s.CountryId,
+            try
+            {
+                return _context.EmployerSetting.Select(s => new ViewModelSetting
+                {
+                    Id = s.Id,
+                    PlateCode = s.PlateCode,
+                    CountryId = s.CountryId,
 
-            }).ToList();
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - GetSettings()",
+                };
+                _context.Errors.Add(error);
+
+                return Enumerable.Empty<ViewModelSetting>();
+
+            }
         }
 
         public void InsertStting(ViewModelSetting setting)
         {
-            var data = new EmployerSetting
+            try
             {
-                Id=setting.Id,
-                PlateCode=setting.PlateCode,
-                CountryId=setting.CountryId,
-                UserId=setting.Id,
-                AddedDate=DateTime.Now,
-            };
+                var data = new EmployerSetting
+                {
+                    Id = setting.Id,
+                    PlateCode = setting.PlateCode,
+                    CountryId = setting.CountryId,
+                    UserId = setting.Id,
+                    AddedDate = DateTime.Now,
+                };
 
-            _context.EmployerSetting.Add(data);
+                _context.EmployerSetting.Add(data);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - InsertStting(ViewModelSetting setting)",
+                };
+                _context.Errors.Add(error);
+            }
+           
            
         }
 
         public int Save()
         {
-           return _context.SaveChanges() ;
+            try
+            {
+                return _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - Save()",
+                };
+                _context.Errors.Add(error);
+                return 0;
+
+            }
+
+           
         }
 
         public void UpdateSetting(ViewModelSetting setting)
         {
-            var data = _context.EmployerSetting.Find(setting.Id);
-            data.PlateCode = setting.PlateCode;
-            data.CountryId = setting.CountryId;
-            data.ModifiedDate = DateTime.Now;
+            try
+            {
+                var data = _context.EmployerSetting.Find(setting.Id);
+                data.PlateCode = setting.PlateCode;
+                data.CountryId = setting.CountryId;
+                data.ModifiedDate = DateTime.Now;
 
-            _context.Entry(data).State = EntityState.Modified;
+                _context.Entry(data).State = EntityState.Modified;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - UpdateSetting(ViewModelSetting setting)",
+                };
+                _context.Errors.Add(error);
+            }
+           
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            try
             {
-                if (disposing)
+                if (!this.disposed)
                 {
-                    _context.Dispose();
+                    if (disposing)
+                    {
+                        _context.Dispose();
+                    }
                 }
+                this.disposed = true;
             }
-            this.disposed = true;
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - Dispose(bool disposing)",
+                };
+                _context.Errors.Add(error);
+            }
+
+           
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "Setting Repository - Dispose(bool disposing)",
+                };
+                _context.Errors.Add(error);
+            }
+            
         }
     }
 }

@@ -18,38 +18,85 @@ namespace WeedWackerCoreWebApi.Repository
 
         public IEnumerable<ViewModelCustomerOffer> GetOffers(string id)
         {
-            var data = _context.EmployerOffers.Where(o => o.CustomerId == id).ToList();
-            if (data.Any())
+            try
             {
-                var result = data.Select(o => new ViewModelCustomerOffer
+                var data = _context.EmployerOffers.Where(o => o.CustomerId == id).ToList();
+                if (data.Any())
                 {
-                    User = o.UserId,
-                    StartTime = o.StartTime,
-                    EndTime = o.EndTime,
-                    Price = o.Price,
-                    Phone = _context.Addresses.Find(o.UserId).Phone,
-                }).ToList();
+                    var result = data.Select(o => new ViewModelCustomerOffer
+                    {
+                        User = o.UserId,
+                        StartTime = o.StartTime,
+                        EndTime = o.EndTime,
+                        Price = o.Price,
+                        Phone = _context.Addresses.Find(o.UserId).Phone,
+                    }).ToList();
 
-                return result;
+                    return result;
+                }
+                return Enumerable.Empty<ViewModelCustomerOffer>();
             }
-            return Enumerable.Empty<ViewModelCustomerOffer>();
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "CustomerOffer Repository - GetOffers(string id)",
+                };
+
+                _context.Errors.Add(error); 
+                
+                return Enumerable.Empty<ViewModelCustomerOffer>();
+            }
+
+           
         }
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            try
             {
-                if (disposing)
+                if (!this.disposed)
                 {
-                    _context.Dispose();
+                    if (disposing)
+                    {
+                        _context.Dispose();
+                    }
                 }
+                this.disposed = true;
             }
-            this.disposed = true;
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "CustomerOffer Repository - Dispose(bool disposing)",
+                };
+                _context.Errors.Add(error);
+            }
+
+            
         }
 
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            try
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "CustomerOffer Repository - Dispose()",
+                };
+            }
+
+            
         }
 
        
