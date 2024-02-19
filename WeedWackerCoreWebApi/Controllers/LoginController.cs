@@ -43,10 +43,10 @@ namespace WeedWackerCoreWebApi.Controllers
                 if (user != null)
                 {
                     var token = GenerateToken(user);
-                    return Ok(token);
+                    return Ok(new {token= token });
                 }
 
-                return NotFound("user not found");
+                return Ok(new {token=""});
             }
             catch (Exception e)
             {
