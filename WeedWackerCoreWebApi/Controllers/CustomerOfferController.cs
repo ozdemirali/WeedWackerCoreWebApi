@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.ViewModel;
@@ -25,6 +27,7 @@ namespace WeedWackerCoreWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Customer")]
         public IEnumerable<ViewModelCustomerOffer> Get(string id)
         {
             try
