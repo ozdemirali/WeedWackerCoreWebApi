@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.Repository;
@@ -7,28 +8,33 @@ using WeedWackerCoreWebApi.ViewModel;
 
 namespace WeedWackerCoreWebApi.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
-    public class AddressController : ControllerBase
+    [Authorize(Roles = "Admin,Customer")]
+
+    public class CityController : ControllerBase
     {
-        private IAddressRepository _addressRepository;
+        private ICityRepository _cityRepository;
         private IErrorRepository _errorRepository;
-        public AddressController(IAddressRepository addressRepository, IErrorRepository errorRepository)
+
+       
+        public CityController(ICityRepository cityRepository,IErrorRepository errorRepository)
         {
-            this._addressRepository = addressRepository;
+            this._cityRepository = cityRepository;
             this._errorRepository = errorRepository;
         }
 
         /// <summary>
-        /// This method gets All data from Database 
+        /// This method gets all city data from Database
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<ViewModelAddress> Get()
+        public IEnumerable<City> Get()
         {
             try
             {
-                return _addressRepository.GetAddress();
+                return _cityRepository.GetCities();
             }
             catch (Exception e)
             {
@@ -36,14 +42,13 @@ namespace WeedWackerCoreWebApi.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Message = e.Message,
-                    Place = "Address Controller - Get()",
+                    Place = "City Controller - Get()",
                 };
 
                 _errorRepository.InsertError(error);
 
-                return Enumerable.Empty<ViewModelAddress>();
+                return Enumerable.Empty<City>();
             }
-           
         }
 
         /// <summary>
@@ -52,16 +57,16 @@ namespace WeedWackerCoreWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public ActionResult<ViewModelAddress> GetById(string id)
+        public ActionResult<City> GetById(int id)
         {
             try
             {
-                var address = _addressRepository.GetAdressById(id);
-                if (address == null)
+                var city = _cityRepository.GetCityById(id);
+                if (city == null)
                 {
                     return NotFound();
                 }
-                return address;
+                return city;
             }
             catch (Exception e)
             {
@@ -73,29 +78,25 @@ namespace WeedWackerCoreWebApi.Controllers
                 };
 
                 _errorRepository.InsertError(error);
-              
-                return new ViewModelAddress();
+
+                return new City();
             }
-
-           
         }
-
         /// <summary>
         /// This method insert new record into database
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="city"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Post(ViewModelAddress address)
+        public ActionResult Post(City city)
         {
-
             try
             {
-                var data = _addressRepository.GetAdressById(address.Id);
+                var data = _cityRepository.GetCityById(city.PlateCode);
                 if (data == null)
                 {
-                    _addressRepository.InsertAddress(address);
-                    if (_addressRepository.Save() > 0)
+                    _cityRepository.InsertCity(city);
+                    if (_cityRepository.Save()>0)
                     {
                         return Ok("Ok");
                     }
@@ -109,50 +110,47 @@ namespace WeedWackerCoreWebApi.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Message = e.Message,
-                    Place = "Address Controller - Post()",
+                    Place = "City Controller - Post()",
                 };
 
                 _errorRepository.InsertError(error);
-                
+
                 return Ok(e.Message);
             }
-            
         }
 
         /// <summary>
         /// This method update object
         /// </summary>
-        /// <param name="address"></param>
+        /// <param name="city"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult Put(ViewModelAddress address) {
-
+        public ActionResult Put(City city)
+        {
             try
             {
-                _addressRepository.UpdateAddress(address);
-                if (_addressRepository.Save() > 0)
+                _cityRepository.UpdateCity(city);
+                if (_cityRepository.Save() > 0)
                 {
                     return Ok("Ok");
                 }
 
                 return NoContent();
+
             }
             catch (Exception e)
             {
-
                 Error error = new()
                 {
                     Id = Guid.NewGuid(),
                     Message = e.Message,
-                    Place = "Address Controller - Put()",
+                    Place = "City Controller - Put()",
                 };
 
                 _errorRepository.InsertError(error);
 
                 return Ok(e.Message);
             }
-
-          
         }
 
         /// <summary>
@@ -161,13 +159,13 @@ namespace WeedWackerCoreWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id)
         {
 
             try
             {
-                _addressRepository.DeleteAddress(id);
-                if (_addressRepository.Save() > 0)
+                _cityRepository.DeleteCity(id);
+                if (_cityRepository.Save() > 0)
                 {
                     return Ok("Ok");
                 }
@@ -179,14 +177,15 @@ namespace WeedWackerCoreWebApi.Controllers
                 {
                     Id = Guid.NewGuid(),
                     Message = e.Message,
-                    Place = "Address Controller - Delete()",
+                    Place = "City Controller - Delete()",
                 };
 
                 _errorRepository.InsertError(error);
 
                 return Ok(e.Message);
             }
-           
+
         }
+
     }
 }
