@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeedWackerCoreWebApi.Context;
 
@@ -11,9 +12,11 @@ using WeedWackerCoreWebApi.Context;
 namespace WeedWackerCoreWebApi.Migrations
 {
     [DbContext(typeof(WeedWackerDbContext))]
-    partial class WeedWackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240621105052_changeDistrictTable")]
+    partial class changeDistrictTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +96,7 @@ namespace WeedWackerCoreWebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Districts");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("WeedWackerCoreWebApi.Entity.EmployerOffer", b =>
@@ -290,12 +293,12 @@ namespace WeedWackerCoreWebApi.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");

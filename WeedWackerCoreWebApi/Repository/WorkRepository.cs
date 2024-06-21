@@ -44,7 +44,7 @@ namespace WeedWackerCoreWebApi.Repository
                 {
                     Id = w.Id,
                     City = _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
-                    Country = _context.Countries.Where(c => c.Id == w.CountryId).FirstOrDefault().Name,
+                    District = _context.Districts.Where(c => c.Id == w.DistrictId).FirstOrDefault().Name,
                     Description = w.Description,
                     Image = w.Image,
                     User = w.UserId
@@ -75,7 +75,7 @@ namespace WeedWackerCoreWebApi.Repository
                 {
                     Id = w.Id,
                     City = _context.Cities.Where(c => c.PlateCode == w.PlateCode).FirstOrDefault().Name,
-                    Country = _context.Countries.Where(c => c.Id == w.CountryId).FirstOrDefault().Name,
+                    District = _context.Districts.Where(c => c.Id == w.DistrictId).FirstOrDefault().Name,
                     Description = w.Description,
                     Image = w.Image,
                     User = w.UserId
@@ -105,7 +105,7 @@ namespace WeedWackerCoreWebApi.Repository
                 var data = new Work
                 {
                     AddedDate = DateTime.Now,
-                    CountryId = work.CountryId,
+                    DistrictId = work.DistrictId,
                     Description = work.Description,
                     Image = work.Image,
                     PlateCode = work.PlateCode,
@@ -154,7 +154,7 @@ namespace WeedWackerCoreWebApi.Repository
             {
                 var data = _context.Works.Find(work.Id);
                 data.PlateCode = work.PlateCode;
-                data.CountryId = work.CountryId;
+                data.DistrictId = work.DistrcitId;
                 data.Description = work.Description;
                 data.Image = work.Image;
                 data.ModifiedDate = work.ModifiedDate;

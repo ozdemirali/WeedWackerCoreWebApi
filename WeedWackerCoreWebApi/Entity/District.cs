@@ -2,7 +2,7 @@
 
 namespace WeedWackerCoreWebApi.Entity
 {
-    public class Country
+    public class District
     {
         
         public int Id { get; set; }

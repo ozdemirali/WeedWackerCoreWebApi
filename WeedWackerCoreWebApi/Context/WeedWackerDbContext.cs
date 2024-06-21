@@ -12,7 +12,7 @@ namespace WeedWackerCoreWebApi.Context
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<District> Districts { get; set; }
         public DbSet<EmployerOffer> EmployerOffers { get; set; }
         public DbSet<EmployerSetting> EmployerSetting { get; set; }
         public DbSet<Error> Errors { get; set; }
