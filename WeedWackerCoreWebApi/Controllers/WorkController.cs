@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using System.Data;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.Repository;
@@ -10,6 +12,7 @@ namespace WeedWackerCoreWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Customer")]
     public class WorkController : ControllerBase
     {
         private IWorkRepository _workRepository;
@@ -100,7 +103,7 @@ namespace WeedWackerCoreWebApi.Controllers
                 _workRepository.InsertWork(work);
                 if (_workRepository.Save() > 0)
                 {
-                    return Ok("Ok");
+                    return Ok(new { status = "ok" });
                 }
 
                 return NoContent();

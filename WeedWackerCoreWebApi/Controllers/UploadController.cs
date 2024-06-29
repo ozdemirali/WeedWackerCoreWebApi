@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Net.Http.Headers;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
@@ -9,6 +11,7 @@ namespace WeedWackerCoreWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Customer")]
     public class UploadController : ControllerBase
     {
         private IUploadRepository _uploadRepository;
