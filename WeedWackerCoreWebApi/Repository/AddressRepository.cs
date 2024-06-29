@@ -46,7 +46,7 @@ namespace WeedWackerCoreWebApi.Repository
                 {
                     Id = a.Id,
                     PlateCode = a.PlateCode,
-                    CountryId = a.CountryId,
+                    DistrictId = a.DistrictId,
                     AddInfo = a.AddInfo,
                     PostCode = a.PostCode,
                     Phone = a.Phone,
@@ -76,7 +76,7 @@ namespace WeedWackerCoreWebApi.Repository
                 {
                     Id = a.Id,
                     PlateCode = a.PlateCode,
-                    CountryId = a.CountryId,
+                    DistrictId = a.DistrictId,
                     AddInfo = a.AddInfo,
                     PostCode = a.PostCode,
                     Phone = a.Phone,
@@ -108,7 +108,7 @@ namespace WeedWackerCoreWebApi.Repository
                     Id = address.Id,
                     UserId = address.Id,
                     PlateCode = address.PlateCode,
-                    CountryId = address.CountryId,
+                    DistrictId = address.DistrictId,
                     PostCode = address.PostCode,
                     Phone = address.Phone,
                     AddInfo = address.AddInfo,
@@ -158,7 +158,7 @@ namespace WeedWackerCoreWebApi.Repository
             {
                 var data = _context.Addresses.Find(address.Id);
                 data.AddInfo = address.AddInfo;
-                data.CountryId = address.CountryId;
+                data.DistrictId = address.DistrictId;
                 data.Phone = address.Phone;
                 data.PlateCode = address.PlateCode;
                 data.Phone = data.Phone;
@@ -230,5 +230,6 @@ namespace WeedWackerCoreWebApi.Repository
            
         }
 
+       
     }
 }

@@ -67,20 +67,62 @@ namespace WeedWackerCoreWebApi.Repository
 
         public IEnumerable<ViewModelDistrict> GetDistrictsById(int plateCode)
         {
-            var result = (from d in _context.Districts
-                         where d.PlateCode == plateCode
-                         select new ViewModelDistrict
-                         {
-                             Id=d.Id,
-                             Name = d.Name
-                         }).ToList();
-            return result;
+            try
+            {
+                var result = (from d in _context.Districts
+                              where d.PlateCode == plateCode
+                              select new ViewModelDistrict
+                              {
+                                  Id = d.Id,
+                                  Name = d.Name
+                              }).ToList();
+                return result;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "District Repository -  GetDistrictsById(int plateCode)",
+                };
+                _context.Errors.Add(error);
+                return Enumerable.Empty<ViewModelDistrict>();   
+            }
+           
                     
         }
 
+      
+
+        public string GetDistrictName(int districtId)
+        {
+            try
+            {
+                var result = _context.Districts.Find(districtId).Name;
+                return result;
+            }
+            catch (Exception e)
+            {
+                Error error = new()
+                {
+                    Id = Guid.NewGuid(),
+                    Message = e.Message,
+                    Place = "District Repository -  GetDistrictName(int districtId)",
+                };
+                _context.Errors.Add(error);
+                return "";
+            }
+
+           
+        }
         public int Save()
         {
             throw new NotImplementedException();
         }
+
+        
+
+        
     }
 }

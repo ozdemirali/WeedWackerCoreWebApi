@@ -6,7 +6,7 @@ namespace WeedWackerCoreWebApi.ViewModel
     {
         public string? Id { get; set; }
         public int PlateCode { get; set; }
-        public int CountryId { get; set; }
+        public int DistrictId { get; set; }
         public string? PostCode { get; set; }
         public string? AddInfo { get; set; }
         public string? Phone { get; set; }

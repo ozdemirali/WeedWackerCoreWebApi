@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using WeedWackerCoreWebApi.Entity;
 using WeedWackerCoreWebApi.IRepository;
 using WeedWackerCoreWebApi.Repository;
@@ -9,13 +11,18 @@ namespace WeedWackerCoreWebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,Customer")]
     public class AddressController : ControllerBase
     {
         private IAddressRepository _addressRepository;
+        private ICityRepository _cityRepository;
+        private IDistrictRepository _districtRepository;
         private IErrorRepository _errorRepository;
-        public AddressController(IAddressRepository addressRepository, IErrorRepository errorRepository)
+        public AddressController(IAddressRepository addressRepository,ICityRepository cityRepository ,IDistrictRepository districtRepository,IErrorRepository errorRepository)
         {
             this._addressRepository = addressRepository;
+            this._cityRepository = cityRepository;
+            this._districtRepository = districtRepository;  
             this._errorRepository = errorRepository;
         }
 
@@ -52,16 +59,24 @@ namespace WeedWackerCoreWebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public ActionResult<ViewModelAddress> GetById(string id)
+        public ActionResult<ViewModelAddressShow> GetById(string id)
         {
             try
             {
                 var address = _addressRepository.GetAdressById(id);
+                ViewModelAddressShow result = new ViewModelAddressShow();
                 if (address == null)
                 {
                     return NotFound();
                 }
-                return address;
+
+                result.Id=address.Id;
+                result.City = _cityRepository.GetCityById(address.PlateCode).Name;
+                result.District = _districtRepository.GetDistrictName(address.DistrictId);
+                result.Phone=address.Phone;
+                result.AddInfo=address.AddInfo;
+                result.PostCode=address.PostCode;
+                return result;
             }
             catch (Exception e)
             {
@@ -74,11 +89,13 @@ namespace WeedWackerCoreWebApi.Controllers
 
                 _errorRepository.InsertError(error);
               
-                return new ViewModelAddress();
+                return new ViewModelAddressShow();
             }
 
            
         }
+
+       
 
         /// <summary>
         /// This method insert new record into database
